@@ -105,6 +105,12 @@ void *run_deadline(void *data)
      attr.sched_runtime =  900 * 1000; //90% utilization right here
      attr.sched_period = attr.sched_deadline = 1000 * 1000;
 
+     clock_t start_cpu_time = clock();
+     clock_t current_cpu_time;
+     struct timespec start_wall_time, current_wall_time; 
+     clock_gettime(CLOCK_REALTIME, &start_wall_time);
+
+
      ret = sched_setattr(0, &attr, flags);
      if (ret < 0) {
              done = 0;
@@ -117,7 +123,14 @@ void *run_deadline(void *data)
           // printf("i'm doing it");
           if (x % 10000000 == 0)
           {
-               printf("woah nelly, that's a lot of increments");
+               printf("woah nelly, that's a lot of increments\n");
+               clock_gettime(CLOCK_REALTIME, &start_wall_time);
+               current_cpu_time = clock();
+               printf("CPU time duration passed: %f s\n" (double)(current_time - start_cpu_time) / CLOCKS_PER_SEC);
+               printf("Wall time passed: %d s, %d ns\n\n", 
+                    current_wall_time.tv_sec - start_wall_time.tv_sec,
+                    current_wall_time.tv_nsec - start_wall_time.tv_nsec);
+
           }
      }
 
