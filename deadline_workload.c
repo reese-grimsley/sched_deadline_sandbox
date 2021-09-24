@@ -114,6 +114,7 @@ void *run_deadline(void *data)
 
      while (1) {
           x++;
+          printf("i'm doing it");
           if (x % 1000000000 == 0)
           {
                printf("woah nelly, that's a billion increments");
