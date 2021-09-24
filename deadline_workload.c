@@ -75,7 +75,7 @@ void do_sched_setaffinity_cpu(int cpu)
 
      if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
           perror("sched_setaffinity error. Kill me");
-          while(1);
+          // while(1);
      }
      printf("sched_getcpu = %d\n", sched_getcpu());
 }
