@@ -121,12 +121,14 @@ void *run_deadline(void *data)
      while (1) {
           x++;
           // printf("i'm doing it");
-          if (x % 10000000 == 0)
+          if (x % 100000000 == 0)
           {
                printf("woah nelly, that's a lot of increments\n");
                clock_gettime(CLOCK_REALTIME, &start_wall_time);
                current_cpu_time = clock();
                printf("CPU time duration passed: %f s\n", (double)(current_cpu_time - start_cpu_time) / CLOCKS_PER_SEC);
+               clock_gettime(CLOCK_REALTIME, &current_wall_time);
+
                printf("Wall time passed: %d s, %d ns\n\n", 
                     current_wall_time.tv_sec - start_wall_time.tv_sec,
                     current_wall_time.tv_nsec - start_wall_time.tv_nsec);
