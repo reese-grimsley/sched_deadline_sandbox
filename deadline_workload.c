@@ -90,7 +90,7 @@ struct timespec time_diff(const struct timespec * last_time, const struct timesp
 void *run_deadline(void *data)
 {
      struct sched_attr attr;
-     int x = 0;
+     volatile int x = 0; //no optimizing this puppy out
      int ret;
      unsigned int flags = 0;
 
@@ -102,8 +102,8 @@ void *run_deadline(void *data)
      attr.sched_priority = 0;
 
      attr.sched_policy = SCHED_DEADLINE;
-     attr.sched_runtime =  1000 * 1000;
-     attr.sched_period = attr.sched_deadline = 2 * 1000 * 1000 * 1000;
+     attr.sched_runtime =  900 * 1000; //90% utilization right here
+     attr.sched_period = attr.sched_deadline = 1000 * 1000;
 
      ret = sched_setattr(0, &attr, flags);
      if (ret < 0) {
@@ -112,26 +112,12 @@ void *run_deadline(void *data)
              exit(-1);
      }
 
-     struct timespec current_time, sleep_duration, remaining_time, last_time;
-     sleep_duration.tv_sec = 0;
-     sleep_duration.tv_nsec = 500 * 1000 * 1000;
-
-     while (!done) {
-          memcpy(&last_time, &current_time, sizeof(struct timespec));
-          clock_gettime(CLOCK_REALTIME, &current_time);
-          printf("Current time is %ld s + %ld ns\r\n" , current_time.tv_sec, current_time.tv_nsec);
-          struct timespec diff = time_diff(&last_time, &current_time);
-          printf("Time difference since last iteration is %ld s + %ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
-          diff.tv_sec -= sleep_duration.tv_sec;
-          diff.tv_nsec -= sleep_duration.tv_nsec;
-          printf("Delay correctness: %ld s + %09ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
-
-          int return_code = nanosleep(&sleep_duration, &remaining_time);
-          if (return_code != 0) {
-               printf("return code indicates we did not sleep the full duration. Code %d", return_code);
-
-          }
+     while (1) {
           x++;
+          if (x % 1000000000 == 0)
+          {
+               printf("woah nelly, that's billion increments")
+          }
      }
 
      printf("deadline thread dies [%ld]\n", gettid());
@@ -140,7 +126,7 @@ void *run_deadline(void *data)
 
 int main (int argc, char **argv)
 {
-  
+     print("Start deadline_workload");
      printf("min priority: %d\t max priority: %d\r\n", sched_get_priority_min(SCHED_FIFO), sched_get_priority_max(SCHED_FIFO));
      
      pthread_t thread;
@@ -149,9 +135,6 @@ int main (int argc, char **argv)
 
      pthread_create(&thread, NULL, run_deadline, NULL);
 
-     sleep(10);
-
-     done = 1;
      pthread_join(thread, NULL);
 
      printf("main dies [%ld]\n", gettid());
