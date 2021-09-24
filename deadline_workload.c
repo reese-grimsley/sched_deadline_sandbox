@@ -85,8 +85,8 @@ void print_affinity() {
     long nproc, i;
 
     if (sched_getaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
-        perror("sched_getaffinity");
-        assert(false);
+        perror("sched_getaffinity error; Kill process");
+        while(1);
     }
     nproc = sysconf(_SC_NPROCESSORS_ONLN);
     printf("sched_getaffinity = ");
