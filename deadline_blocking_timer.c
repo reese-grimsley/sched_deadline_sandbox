@@ -8,6 +8,8 @@
 #include <linux/kernel.h>
 #include <linux/types.h>
 #include <sys/syscall.h>
+#include <sched.h>
+#include <assert.h>
 #include <pthread.h>
 
 #define gettid() syscall(__NR_gettid)
@@ -65,6 +67,19 @@ int sched_getattr(pid_t pid,
      return syscall(__NR_sched_getattr, pid, attr, size, flags);
 }
 
+void do_sched_setaffinity_cpu0()
+{
+     cpu_set_t mask;
+     CPU_ZERO(&mask);
+     CPU_SET(0, &mask); //set the PCPU for the 0th task
+
+     if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
+          perror("sched_setaffinity");
+          assert(false);
+     }
+     printf("sched_getcpu = %d\n", sched_getcpu());
+}
+
 struct timespec time_diff(const struct timespec * last_time, const struct timespec * current_time)
 {
      struct timespec diff;
@@ -95,6 +110,7 @@ void *run_deadline(void *data)
      unsigned int flags = 0;
 
      printf("deadline thread started [%ld]\n", gettid());
+     do_sched_setaffinity_cpu0();
 
      attr.size = sizeof(attr);
      attr.sched_flags = 0;
