@@ -124,13 +124,13 @@ void *run_deadline(void *data)
           if (x % 100000000 == 0)
           {
                printf("woah nelly, that's a lot of increments\n");
-               clock_gettime(CLOCK_REALTIME, &start_wall_time);
                current_cpu_time = clock();
                printf("CPU time duration passed: %f s\n", (double)(current_cpu_time - start_cpu_time) / CLOCKS_PER_SEC);
+
                clock_gettime(CLOCK_REALTIME, &current_wall_time);
                struct timespec diff = time_diff(&start_wall_time, &current_wall_time);
 
-               printf("Delay correctness: %ld s + %09ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
+               printf("Wall clock time passed: %ld s + %09ld ns\r\n\n" , diff.tv_sec, diff.tv_nsec);
 
 
           }
