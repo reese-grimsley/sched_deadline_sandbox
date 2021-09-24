@@ -80,6 +80,22 @@ void do_sched_setaffinity_cpu(int cpu)
      printf("sched_getcpu = %d\n", sched_getcpu());
 }
 
+void print_affinity() {
+    cpu_set_t mask;
+    long nproc, i;
+
+    if (sched_getaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
+        perror("sched_getaffinity");
+        assert(false);
+    }
+    nproc = sysconf(_SC_NPROCESSORS_ONLN);
+    printf("sched_getaffinity = ");
+    for (i = 0; i < nproc; i++) {
+        printf("%d ", CPU_ISSET(i, &mask));
+    }
+    printf("\n");
+}
+
 struct timespec time_diff(const struct timespec * last_time, const struct timespec * current_time)
 {
      struct timespec diff;
@@ -110,6 +126,7 @@ void *run_deadline(void *data)
      int ret;
      unsigned int flags = 0;
 
+     print_affinity();
      printf("deadline thread started [%ld]\n", gettid());
      // do_sched_setaffinity_cpu(1);
 
@@ -134,7 +151,9 @@ void *run_deadline(void *data)
              perror("sched_setattr");
              exit(-1);
      }
+     print_affinity();
      do_sched_setaffinity_cpu(1);
+     print_affinity();
 
 
      while (1) {
