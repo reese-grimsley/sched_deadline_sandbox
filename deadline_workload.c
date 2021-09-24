@@ -128,10 +128,10 @@ void *run_deadline(void *data)
                current_cpu_time = clock();
                printf("CPU time duration passed: %f s\n", (double)(current_cpu_time - start_cpu_time) / CLOCKS_PER_SEC);
                clock_gettime(CLOCK_REALTIME, &current_wall_time);
+               struct timespec diff = time_diff(&start_wall_time, &current_wall_time);
 
-               printf("Wall time passed: %d s, %d ns\n\n", 
-                    current_wall_time.tv_sec - start_wall_time.tv_sec,
-                    current_wall_time.tv_nsec - start_wall_time.tv_nsec);
+               printf("Delay correctness: %ld s + %09ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
+
 
           }
      }
