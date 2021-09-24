@@ -102,7 +102,7 @@ void *run_deadline(void *data)
      attr.sched_priority = 0;
 
      attr.sched_policy = SCHED_DEADLINE;
-     attr.sched_runtime =  900 * 1000; //90% utilization right here
+     attr.sched_runtime =  950 * 1000; //95% utilization right here
      attr.sched_period = attr.sched_deadline = 1000 * 1000;
 
      clock_t start_cpu_time = clock();
