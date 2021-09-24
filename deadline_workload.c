@@ -126,7 +126,7 @@ void *run_deadline(void *data)
                printf("woah nelly, that's a lot of increments\n");
                clock_gettime(CLOCK_REALTIME, &start_wall_time);
                current_cpu_time = clock();
-               printf("CPU time duration passed: %f s\n" (double)(current_time - start_cpu_time) / CLOCKS_PER_SEC);
+               printf("CPU time duration passed: %f s\n", (double)(current_time - start_cpu_time) / CLOCKS_PER_SEC);
                printf("Wall time passed: %d s, %d ns\n\n", 
                     current_wall_time.tv_sec - start_wall_time.tv_sec,
                     current_wall_time.tv_nsec - start_wall_time.tv_nsec);
