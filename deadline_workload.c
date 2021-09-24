@@ -126,7 +126,7 @@ void *run_deadline(void *data)
 
 int main (int argc, char **argv)
 {
-     print("Start deadline_workload");
+     printf("Start deadline_workload");
      printf("min priority: %d\t max priority: %d\r\n", sched_get_priority_min(SCHED_FIFO), sched_get_priority_max(SCHED_FIFO));
      
      pthread_t thread;
