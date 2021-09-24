@@ -74,7 +74,7 @@ void do_sched_setaffinity_cpu0()
      CPU_SET(0, &mask); //set the PCPU for the 0th task
 
      if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
-          perror("sched_setaffinity");
+          perror("sched_setaffinity error");
           assert(false);
      }
      printf("sched_getcpu = %d\n", sched_getcpu());
