@@ -67,11 +67,11 @@ int sched_getattr(pid_t pid,
      return syscall(__NR_sched_getattr, pid, attr, size, flags);
 }
 
-void do_sched_setaffinity_cpu0()
+void do_sched_setaffinity_cpu(uint8_t cpu)
 {
      cpu_set_t mask;
      CPU_ZERO(&mask);
-     CPU_SET(0, &mask); //set the PCPU for the 0th task
+     CPU_SET(cpu, &mask); 
 
      if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
           perror("sched_setaffinity error. Kill me");
@@ -110,7 +110,7 @@ void *run_deadline(void *data)
      unsigned int flags = 0;
 
      printf("deadline thread started [%ld]\n", gettid());
-     // do_sched_setaffinity_cpu0();
+     // do_sched_setaffinity_cpu(1);
 
      attr.size = sizeof(attr);
      attr.sched_flags = 0;
@@ -133,7 +133,7 @@ void *run_deadline(void *data)
              perror("sched_setattr");
              exit(-1);
      }
-     do_sched_setaffinity_cpu0();
+     do_sched_setaffinity_cpu(1);
 
 
      while (1) {
