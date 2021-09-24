@@ -110,7 +110,7 @@ void *run_deadline(void *data)
      unsigned int flags = 0;
 
      printf("deadline thread started [%ld]\n", gettid());
-     do_sched_setaffinity_cpu0();
+     // do_sched_setaffinity_cpu0();
 
      attr.size = sizeof(attr);
      attr.sched_flags = 0;
@@ -133,6 +133,8 @@ void *run_deadline(void *data)
              perror("sched_setattr");
              exit(-1);
      }
+     do_sched_setaffinity_cpu0();
+
 
      while (1) {
           x++;
