@@ -114,7 +114,7 @@ void *run_deadline(void *data)
 
      struct timespec current_time, sleep_duration, remaining_time, last_time;
      sleep_duration.tv_sec = 5;
-     sleep_duration.tv_nsec = 5 * 1000 * 1000;
+     sleep_duration.tv_nsec = 500 * 1000 * 1000;
 
      while (!done) {
           memcpy(&last_time, &current_time, sizeof(struct timespec));
