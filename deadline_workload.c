@@ -67,7 +67,7 @@ int sched_getattr(pid_t pid,
      return syscall(__NR_sched_getattr, pid, attr, size, flags);
 }
 
-void do_sched_setaffinity_cpu(uint8_t cpu)
+void do_sched_setaffinity_cpu(int cpu)
 {
      cpu_set_t mask;
      CPU_ZERO(&mask);
