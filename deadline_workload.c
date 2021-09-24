@@ -102,6 +102,7 @@ struct timespec time_diff(const struct timespec * last_time, const struct timesp
      return diff;
 }
 
+
 void *run_deadline(void *data)
 {
      struct sched_attr attr;
