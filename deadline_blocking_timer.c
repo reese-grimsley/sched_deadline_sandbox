@@ -141,7 +141,7 @@ void *run_deadline(void *data)
      printf("deadline thread dies [%ld]\n", gettid());
      if (is_error_detected) 
      {
-          printf("Detected error in the timekeeping!");
+          printf("DETECTED ERROR IN TIMEKEEPING!\n");
      }
 
      return NULL;
