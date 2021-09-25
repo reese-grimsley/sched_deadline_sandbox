@@ -10,7 +10,7 @@ blocking_test: deadline_blocking_timer.c libs
 load: deadline_workload.c libs
 	$(CC) -o dl_load.out deadline_workload.c helpers.o $(CFLAGS)
 
-all: clean blocking_test load
+all: libs blocking_test load
 
 clean: 
 	rm dl_load.out dl_block.out
