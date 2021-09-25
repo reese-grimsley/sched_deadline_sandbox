@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -lpthread -I .
+CFLAGS = -lpthread -I . -g0
 
 
 libs: helpers.h
