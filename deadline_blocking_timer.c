@@ -81,7 +81,7 @@ void *run_deadline(void *data)
      int x = 0;
      int ret;
      unsigned int flags = 0;
-     bool error = false;
+     int error = false;
 
      printf("deadline thread started [%ld]\n", gettid());
      printf("sched_getcpu = %d\n", sched_getcpu());
