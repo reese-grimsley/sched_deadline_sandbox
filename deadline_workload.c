@@ -35,6 +35,8 @@
 #define __NR_sched_getattr           381
 #endif
 
+const uint64_t C = 1000 * 1000 * 600;  // nsec
+const uint64_t T = 1000 * 1000 * 1000 * 1; 
 static volatile int done;
 
 struct sched_attr {
@@ -91,8 +93,9 @@ void *run_deadline(void *data)
      attr.sched_priority = 0;
 
      attr.sched_policy = SCHED_DEADLINE;
-     attr.sched_runtime =  6 * 1000 * 1000; 
-     attr.sched_period = attr.sched_deadline = 10 * 1000 * 1000;
+     attr.sched_runtime =  C;
+     attr.sched_period = T;
+     attr.sched_deadline = T;
      printf("Schedule C: [%lu]  D: [%lu]  T:[%lu]\n", attr.sched_runtime, attr.sched_deadline, attr.sched_period);
 
      clock_t start_cpu_time = clock();

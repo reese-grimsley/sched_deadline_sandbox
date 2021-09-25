@@ -87,8 +87,9 @@ void *run_deadline(void *data)
      attr.sched_priority = 0;
 
      attr.sched_policy = SCHED_DEADLINE;
-     attr.sched_runtime =  10 * 1000 * 1000;
-     attr.sched_period = attr.sched_deadline = 2 * 1000 * 1000 * 1000;
+     attr.sched_runtime =  C;
+     attr.sched_period = T;
+     attr.sched_deadline = T;
      printf("Schedule C: [%lu]  D: [%lu]  T:[%lu]\n", attr.sched_runtime, attr.sched_deadline, attr.sched_period);
 
      ret = sched_setattr(0, &attr, flags);
