@@ -38,7 +38,7 @@
 const struct timespec SLEEP_DURATION = {.tv_sec = 5, .tv_nsec = 0};
 const __u64 C = 1000 * 1000 * 10;  // nsec
 const __u64 T = 1000 * 1000 * 100; 
-const int TIMEOUT = 30;
+const int TIMEOUT = 60;
 static volatile int done;
 
 struct sched_attr {
