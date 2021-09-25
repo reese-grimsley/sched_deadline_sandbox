@@ -156,7 +156,7 @@ void *run_deadline(void *data)
           printf("sched_getcpu = %d\n", sched_getcpu());
 
           x++;
-)
+
      }
 
      printf("deadline thread dies [%ld]\n", gettid());
