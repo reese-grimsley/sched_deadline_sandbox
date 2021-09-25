@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -lpthread 
+CFLAGS = -lpthread -I
 
 
-libs: 
-	$(CC) -o helpers.o helpers.c 
+libs: helpers.h
+	$(CC) -o helpers.o helpers.c $(CFLAGS)
 
 blocking_test: deadline_blocking_timer.c libs
 	$(CC) -o dl_block.out deadline_blocking_timer.c $(CFLAGS)
