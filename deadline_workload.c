@@ -74,7 +74,7 @@ int sched_getattr(pid_t pid,
 
 void *run_deadline(void *data)
 {
-     struct sched_attr attr;
+     struct sched_attr attr, runtime_attr;
      volatile int x = 0; //no optimizing this puppy out
      int ret;
      unsigned int flags = 0;
@@ -119,7 +119,8 @@ void *run_deadline(void *data)
           // printf("i'm doing it");
           if (x % 100000000 == 0)
           {
-               printf("Schedule C: [%lu]  D: [%lu]  T:[%lu]\n", attr.sched_runtime, attr.sched_deadline, attr.sched_period);
+               sched_getattr(0, &runtime_attr, sizeof(runtime_attr), flags)
+               printf("Schedule C: [%lu]  D: [%lu]  T:[%lu]\n", runtime_attr.sched_runtime, runtime_attr.sched_deadline, runtime_attr.sched_period);
 
                printf("woah nelly, that's a lot of increments\n");
                printf("sched_getcpu = %d\n", sched_getcpu());
