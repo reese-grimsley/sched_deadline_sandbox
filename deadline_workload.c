@@ -93,6 +93,7 @@ void *run_deadline(void *data)
      attr.sched_policy = SCHED_DEADLINE;
      attr.sched_runtime =  6 * 1000 * 1000 * 1000; 
      attr.sched_period = attr.sched_deadline = 10 * 1000 * 1000* 1000;
+     printf("Schedule C: [%uld]  D: [%uld]  T:[%uld]", attr.sched_runtime, attr.sched_deadline, attr.sched_period);
 
      clock_t start_cpu_time = clock();
      clock_t current_cpu_time;
