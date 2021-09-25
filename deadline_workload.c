@@ -36,8 +36,10 @@
 #define __NR_sched_getattr           381
 #endif
 
-const __u64 C = 1000 * 1000 * 750;  // nsec
-const __u64 T = 1000 * 1000 * 1000 * 1; 
+const float U = 0.75;
+const __u64 T = 1000 * 1000 * 1000 * 4; 
+const __u64 C = (__u64) T * U;  // nsec
+
 const int TIMEOUT = 60 * 5; 
 static volatile int done;
 
