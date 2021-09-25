@@ -119,7 +119,8 @@ void *run_deadline(void *data)
           // printf("i'm doing it");
           if (x % 100000000 == 0)
           {
-               
+               printf("Schedule C: [%uld]  D: [%uld]  T:[%uld]", attr.sched_runtime, attr.sched_deadline, attr.sched_period);
+
                printf("woah nelly, that's a lot of increments\n");
                printf("sched_getcpu = %d\n", sched_getcpu());
 
