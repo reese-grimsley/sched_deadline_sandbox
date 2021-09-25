@@ -70,39 +70,6 @@ int sched_getattr(pid_t pid,
      return syscall(__NR_sched_getattr, pid, attr, size, flags);
 }
 
-// void do_sched_setaffinity_cpu(int cpu)
-// {
-//      cpu_set_t mask;
-//      CPU_ZERO(&mask);
-//      CPU_SET(cpu, &mask); 
-
-//      if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
-//           perror("sched_setaffinity error. Kill me");
-//           // while(1);
-//      }
-//      printf("sched_getcpu = %d\n", sched_getcpu());
-// }
-
-// struct timespec time_diff(const struct timespec * last_time, const struct timespec * current_time)
-// {
-//      struct timespec diff;
-//      diff.tv_sec = current_time->tv_sec - last_time->tv_sec;
-//      diff.tv_nsec = current_time->tv_nsec - last_time->tv_nsec;
-
-//      while (diff.tv_nsec < 0)
-//      {
-//           diff.tv_nsec += 1000 * 1000 * 1000;
-//           diff.tv_sec--;
-//      }
-//      while (diff.tv_nsec > 1000 * 1000 * 1000)
-//      {
-//           diff.tv_nsec -= 1000 * 1000 * 1000;
-//           diff.tv_sec++;
-//      }
-
-//      return diff;
-// }
-
 void *run_deadline(void *data)
 {
      struct sched_attr attr;
@@ -135,6 +102,7 @@ void *run_deadline(void *data)
 
      struct timespec current_time, remaining_time, last_time, sleep_duration;
      memcpy(&sleep_duration, &SLEEP_DURATION , sizeof(struct timespec));
+     printf("We shall sleep sleep for %ld s + %09ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
 
 
      while (!done) {

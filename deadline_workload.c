@@ -70,54 +70,6 @@ int sched_getattr(pid_t pid,
      return syscall(__NR_sched_getattr, pid, attr, size, flags);
 }
 
-// void do_sched_setaffinity_cpu(int cpu)
-// {
-//      cpu_set_t mask;
-//      CPU_ZERO(&mask);
-//      CPU_SET(cpu, &mask); 
-
-//      if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
-//           perror("sched_setaffinity error. Kill me");
-//           // while(1);
-//      }
-//      printf("sched_getcpu = %d\n", sched_getcpu());
-// }
-
-// void print_affinity() {
-//     cpu_set_t mask;
-//     long nproc, i;
-
-//     if (sched_getaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
-//         perror("sched_getaffinity error; Kill process");
-//         while(1);
-//     }
-//     nproc = sysconf(_SC_NPROCESSORS_ONLN);
-//     printf("sched_getaffinity = ");
-//     for (i = 0; i < nproc; i++) {
-//         printf("%d ", CPU_ISSET(i, &mask));
-//     }
-//     printf("\n");
-// }
-
-// struct timespec time_diff(const struct timespec * last_time, const struct timespec * current_time)
-// {
-//      struct timespec diff;
-//      diff.tv_sec = current_time->tv_sec - last_time->tv_sec;
-//      diff.tv_nsec = current_time->tv_nsec - last_time->tv_nsec;
-
-//      while (diff.tv_nsec < 0)
-//      {
-//           diff.tv_nsec += 1000 * 1000 * 1000;
-//           diff.tv_sec--;
-//      }
-//      while (diff.tv_nsec > 1000 * 1000 * 1000)
-//      {
-//           diff.tv_nsec -= 1000 * 1000 * 1000;
-//           diff.tv_sec++;
-//      }
-
-//      return diff;
-// }
 
 
 void *run_deadline(void *data)
@@ -139,7 +91,7 @@ void *run_deadline(void *data)
      attr.sched_priority = 0;
 
      attr.sched_policy = SCHED_DEADLINE;
-     attr.sched_runtime =  1000 * 1000; //90% utilization right here
+     attr.sched_runtime =  1000 * 1000; //10% utilization right here
      attr.sched_period = attr.sched_deadline = 10 * 1000 * 1000;
 
      clock_t start_cpu_time = clock();
