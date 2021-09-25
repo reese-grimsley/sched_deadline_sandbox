@@ -141,6 +141,7 @@ void *run_deadline(void *data)
                printf("Wall clock time passed: %ld s + %09ld ns\r\n\n" , diff.tv_sec, diff.tv_nsec);
 
                if (diff.tv_sec > TIMEOUT) break;
+               printf("\n");
           }
      }
 
