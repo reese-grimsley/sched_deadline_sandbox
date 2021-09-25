@@ -110,6 +110,8 @@ void *run_deadline(void *data)
      unsigned int flags = 0;
 
      printf("deadline thread started [%ld]\n", gettid());
+     printf("sched_getcpu = %d\n", sched_getcpu());
+
 
      attr.size = sizeof(attr);
      attr.sched_flags = 0;
@@ -126,12 +128,13 @@ void *run_deadline(void *data)
              perror("sched_setattr");
              exit(-1);
      }
-     do_sched_setaffinity_cpu(1);
-
+     // do_sched_setaffinity_cpu(1);
+     printf("scheduling attributes set");
+     printf("sched_getcpu = %d\n", sched_getcpu());
 
      struct timespec current_time, sleep_duration, remaining_time, last_time;
      sleep_duration.tv_sec = 5;
-     sleep_duration.tv_nsec = 500 * 1000 * 1000;
+     sleep_duration.tv_nsec = 0 * 1000 * 1000;
 
      while (!done) {
           memcpy(&last_time, &current_time, sizeof(struct timespec));
@@ -148,6 +151,8 @@ void *run_deadline(void *data)
                printf("return code indicates we did not sleep the full duration. Code %d", return_code);
 
           }
+          printf("sched_getcpu = %d\n", sched_getcpu());
+
           x++;
      }
 

@@ -128,6 +128,8 @@ void *run_deadline(void *data)
 
      print_affinity();
      printf("deadline thread started [%ld]\n", gettid());
+     printf("sched_getcpu = %d\n", sched_getcpu());
+
      // do_sched_setaffinity_cpu(1);
 
      attr.size = sizeof(attr);
@@ -151,9 +153,11 @@ void *run_deadline(void *data)
              perror("sched_setattr");
              exit(-1);
      }
-     print_affinity();
-     do_sched_setaffinity_cpu(1);
-     print_affinity();
+     printf("scheduling attributes set");
+     printf("sched_getcpu = %d\n", sched_getcpu());
+
+     // do_sched_setaffinity_cpu(1);
+     // print_affinity();
 
 
      while (1) {
@@ -161,7 +165,10 @@ void *run_deadline(void *data)
           // printf("i'm doing it");
           if (x % 100000000 == 0)
           {
+               
                printf("woah nelly, that's a lot of increments\n");
+               printf("sched_getcpu = %d\n", sched_getcpu());
+
                current_cpu_time = clock();
                printf("CPU time duration passed: %f s\n", (double)(current_cpu_time - start_cpu_time) / CLOCKS_PER_SEC);
 
