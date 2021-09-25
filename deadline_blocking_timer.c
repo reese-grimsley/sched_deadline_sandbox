@@ -111,6 +111,7 @@ void *run_deadline(void *data)
 
 
      while (!done) {
+          clock_gettime(CLOCK_REALTIME, &current_time);
           int return_code = nanosleep(&sleep_duration, &remaining_time);
           if (return_code != 0) {
                printf("return code indicates we did not sleep the full duration. Code %d", return_code);
@@ -122,8 +123,7 @@ void *run_deadline(void *data)
           printf("Current time is %ld s + %09ld ns\r\n" , current_time.tv_sec, current_time.tv_nsec);
           struct timespec diff = time_diff(&last_time, &current_time);
           printf("Time difference since last iteration is %ld s + %09ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
-          diff.tv_sec -= sleep_duration.tv_sec;
-          diff.tv_nsec -= sleep_duration.tv_nsec;
+          diff = time_diff(&diff, &sleep_duration);
           printf("Delay correctness: %ld s + %09ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
 
           printf("sched_getcpu = %d\n", sched_getcpu());
