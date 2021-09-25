@@ -36,8 +36,8 @@
 #define __NR_sched_getattr           381
 #endif
 
-const float U = 0.85; //.9 crashed pi with N threads for N cores!
-const __u64 T = 1000 * 1000 * 1000 * 1; 
+const float U = 0.8; //.9 crashed pi with N threads for N cores!
+const __u64 T = 1000 * 1000 * 1000 * 1 + 1; 
 const __u64 C = (__u64)(uint32_t) T * U;
 
 const int TIMEOUT = 60 * 5; 
