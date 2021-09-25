@@ -39,6 +39,7 @@ const struct timespec SLEEP_DURATION = {.tv_sec = 0, .tv_nsec = 500 * 1000 * 100
 const __u64 C = 1000 * 1000 * 10;  // nsec
 const __u64 T = 1000 * 1000 * 1000 * 2; 
 const int TIMEOUT = 60;
+const int NSEC_ERROR_THRESHOLD = 1000000;
 static volatile int done;
 
 struct sched_attr {
@@ -80,6 +81,7 @@ void *run_deadline(void *data)
      int x = 0;
      int ret;
      unsigned int flags = 0;
+     bool error = false;
 
      printf("deadline thread started [%ld]\n", gettid());
      printf("sched_getcpu = %d\n", sched_getcpu());
@@ -130,10 +132,12 @@ void *run_deadline(void *data)
           printf("sched_getcpu = %d\n", sched_getcpu());
 
           x++;
+          if (diff.tv_nsec > NSEC_ERROR_THRESHOLD || diff.tv_sec != 0) error = true;
 
      }
 
      printf("deadline thread dies [%ld]\n", gettid());
+     if (error) printf("Detected error in the timekeeping!");
      return NULL;
 }
 
