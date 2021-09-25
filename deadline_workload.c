@@ -36,7 +36,7 @@
 #define __NR_sched_getattr           381
 #endif
 
-const float U = 0.75;
+const float U = 0.75; //.9 crashed pi with N threads for N cores!
 const __u64 T = 1000 * 1000 * 1000 * 4; 
 const __u64 C = (__u64) T * U;  // nsec
 
