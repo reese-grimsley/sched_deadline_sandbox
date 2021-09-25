@@ -36,8 +36,8 @@
 #define __NR_sched_getattr           381
 #endif
 
-const uint64_t C = 1000 * 1000 * 600;  // nsec
-const uint64_t T = 1000 * 1000 * 1000 * 1; 
+const __u64 C = 1000 * 1000 * 600;  // nsec
+const __u64 T = 1000 * 1000 * 1000 * 1; 
 static volatile int done;
 
 struct sched_attr {
