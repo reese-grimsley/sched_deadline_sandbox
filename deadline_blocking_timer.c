@@ -35,6 +35,8 @@
 #endif
 
 const struct timespec SLEEP_DURATION = {.tv_sec = 5, .tv_nsec = 0};
+const uint64_t C = 1000 * 1000 * 10;  // nsec
+const uint64_t T = 1000 * 1000 * 1000 * 2; 
 static volatile int done;
 
 struct sched_attr {
