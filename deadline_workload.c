@@ -36,8 +36,9 @@
 #define __NR_sched_getattr           381
 #endif
 
-const __u64 C = 1000 * 1000 * 900;  // nsec
+const __u64 C = 1000 * 1000 * 750;  // nsec
 const __u64 T = 1000 * 1000 * 1000 * 1; 
+const int TIMEOUT = 60 * 5; 
 static volatile int done;
 
 struct sched_attr {
@@ -137,7 +138,7 @@ void *run_deadline(void *data)
 
                printf("Wall clock time passed: %ld s + %09ld ns\r\n\n" , diff.tv_sec, diff.tv_nsec);
 
-
+               if (diff.tv_sec > TIMEOUT) break;
           }
      }
 
@@ -148,7 +149,7 @@ void *run_deadline(void *data)
 int main (int argc, char **argv)
 {
      printf("Start deadline_workload\n");
-     printf("sizeof __u64: [%d]", sizeof(__u64));
+     printf("sizeof __u64: [%d]\n", sizeof(__u64));
      printf("min priority: %d\t max priority: %d\r\n", sched_get_priority_min(SCHED_FIFO), sched_get_priority_max(SCHED_FIFO));
      
      pthread_t thread;
