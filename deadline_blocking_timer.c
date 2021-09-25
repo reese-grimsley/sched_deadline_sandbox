@@ -35,7 +35,7 @@
 #define __NR_sched_getattr           381
 #endif
 
-const struct timespec SLEEP_DURATION = {.tv_sec = 3, .tv_nsec = 117 * 1000 * 1000};
+const struct timespec SLEEP_DURATION = {.tv_sec = 0, .tv_nsec = 117 * 1000 * 1000};
 const __u64 C = 1000 * 1000 * 10;  // nsec
 const __u64 T = 1000 * 1000 * 500 ; 
 const int TIMEOUT = 60;
