@@ -22,7 +22,7 @@ struct timespec time_diff(const struct timespec * last_time, const struct timesp
      if (diff.tv_sec < 0)
      {
           diff.tv_sec = abs(diff.tv_sec);
-          diff.tv_nsec += 1000 * 1000 * 1000
+          diff.tv_nsec += 1000 * 1000 * 1000;
      }
 
      while (diff.tv_nsec < 0)
