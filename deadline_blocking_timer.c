@@ -132,12 +132,18 @@ void *run_deadline(void *data)
           printf("sched_getcpu = %d\n", sched_getcpu());
 
           x++;
-          if (diff.tv_nsec > NSEC_ERROR_THRESHOLD || diff.tv_sec != 0) is_error_detected = 1;
-
+          if (diff.tv_nsec > NSEC_ERROR_THRESHOLD || diff.tv_sec != 0) 
+          {
+               is_error_detected = 1;
+          }
      }
 
      printf("deadline thread dies [%ld]\n", gettid());
-     if (is_error_detected) printf("Detected error in the timekeeping!");
+     if (is_error_detected) 
+     {
+          printf("Detected error in the timekeeping!");
+     }
+
      return NULL;
 }
 
