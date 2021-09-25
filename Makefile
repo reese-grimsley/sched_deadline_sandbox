@@ -13,4 +13,4 @@ load: deadline_workload.c libs
 all: libs blocking_test load
 
 clean: 
-	rm dl_load.out dl_block.out
+	rm -f dl_load.out dl_block.out

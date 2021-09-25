@@ -34,7 +34,7 @@
 #define __NR_sched_getattr           381
 #endif
 
-const struct timespec SLEEP_DURATION = {.tv_nsec = 5, .tv_nsec = 0};
+const struct timespec SLEEP_DURATION = {.tv_sec = 5, .tv_nsec = 0};
 static volatile int done;
 
 struct sched_attr {
