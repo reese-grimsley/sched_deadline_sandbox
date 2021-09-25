@@ -35,9 +35,9 @@
 #define __NR_sched_getattr           381
 #endif
 
-const struct timespec SLEEP_DURATION = {.tv_sec = 7, .tv_nsec = 100 * 1000 * 1000};
+const struct timespec SLEEP_DURATION = {.tv_sec = 3, .tv_nsec = 117 * 1000 * 1000};
 const __u64 C = 1000 * 1000 * 10;  // nsec
-const __u64 T = 1000 * 1000 * 1000 * 1; 
+const __u64 T = 1000 * 1000 * 500 ; 
 const int TIMEOUT = 60;
 const int NSEC_ERROR_THRESHOLD = 1000000;
 static volatile int done;
