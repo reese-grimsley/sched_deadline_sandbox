@@ -102,7 +102,8 @@ void *run_deadline(void *data)
 
      struct timespec current_time, remaining_time, last_time, sleep_duration;
      memcpy(&sleep_duration, &SLEEP_DURATION , sizeof(struct timespec));
-     printf("We shall sleep sleep for %ld s + %09ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
+     printf("We shall sleep for %ld s + %09ld ns\r\n" , sleep_duration.tv_sec, sleep_duration.tv_nsec);
+     printf("We shall sleep OG for %ld s + %09ld ns\r\n" , SLEEP_DURATION.tv_sec, SLEEP_DURATION.tv_nsec);
 
 
      while (!done) {
