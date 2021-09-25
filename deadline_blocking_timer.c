@@ -12,6 +12,8 @@
 #include <assert.h>
 #include <pthread.h>
 
+#include "helpers.h"
+
 #define gettid() syscall(__NR_gettid)
 
 #define SCHED_DEADLINE       6
@@ -32,6 +34,7 @@
 #define __NR_sched_getattr           381
 #endif
 
+const struct timespec SLEEP_DURATION = {.tv_nsec = 5, .tv_nsec = 0};
 static volatile int done;
 
 struct sched_attr {
@@ -67,40 +70,38 @@ int sched_getattr(pid_t pid,
      return syscall(__NR_sched_getattr, pid, attr, size, flags);
 }
 
-void do_sched_setaffinity_cpu(int cpu)
-{
-     cpu_set_t mask;
-     CPU_ZERO(&mask);
-     CPU_SET(cpu, &mask); 
+// void do_sched_setaffinity_cpu(int cpu)
+// {
+//      cpu_set_t mask;
+//      CPU_ZERO(&mask);
+//      CPU_SET(cpu, &mask); 
 
-     if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
-          perror("sched_setaffinity error. Kill me");
-          // while(1);
-     }
-     printf("sched_getcpu = %d\n", sched_getcpu());
-}
+//      if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
+//           perror("sched_setaffinity error. Kill me");
+//           // while(1);
+//      }
+//      printf("sched_getcpu = %d\n", sched_getcpu());
+// }
 
-struct timespec time_diff(const struct timespec * last_time, const struct timespec * current_time)
-{
-     struct timespec diff;
-     diff.tv_sec = current_time->tv_sec - last_time->tv_sec;
-     diff.tv_nsec = current_time->tv_nsec - last_time->tv_nsec;
+// struct timespec time_diff(const struct timespec * last_time, const struct timespec * current_time)
+// {
+//      struct timespec diff;
+//      diff.tv_sec = current_time->tv_sec - last_time->tv_sec;
+//      diff.tv_nsec = current_time->tv_nsec - last_time->tv_nsec;
 
-     while (diff.tv_nsec < 0)
-     {
-          printf(".");
-          diff.tv_nsec += 1000 * 1000 * 1000;
-          diff.tv_sec--;
-     }
-     while (diff.tv_nsec > 1000 * 1000 * 1000)
-     {
-          printf(",");
-          diff.tv_nsec -= 1000 * 1000 * 1000;
-          diff.tv_sec++;
-     }
+//      while (diff.tv_nsec < 0)
+//      {
+//           diff.tv_nsec += 1000 * 1000 * 1000;
+//           diff.tv_sec--;
+//      }
+//      while (diff.tv_nsec > 1000 * 1000 * 1000)
+//      {
+//           diff.tv_nsec -= 1000 * 1000 * 1000;
+//           diff.tv_sec++;
+//      }
 
-     return diff;
-}
+//      return diff;
+// }
 
 void *run_deadline(void *data)
 {
@@ -129,31 +130,33 @@ void *run_deadline(void *data)
              exit(-1);
      }
      // do_sched_setaffinity_cpu(1);
-     printf("scheduling attributes set");
+     printf("scheduling attributes set\n");
      printf("sched_getcpu = %d\n", sched_getcpu());
 
-     struct timespec current_time, sleep_duration, remaining_time, last_time;
-     sleep_duration.tv_sec = 5;
-     sleep_duration.tv_nsec = 0 * 1000 * 1000;
+     struct timespec current_time, remaining_time, last_time, sleep_duration;
+     memcpy(&sleep_duration, &SLEEP_DURATION , sizeof(struct timespec));
+
 
      while (!done) {
-          memcpy(&last_time, &current_time, sizeof(struct timespec));
-          clock_gettime(CLOCK_REALTIME, &current_time);
-          printf("Current time is %ld s + %ld ns\r\n" , current_time.tv_sec, current_time.tv_nsec);
-          struct timespec diff = time_diff(&last_time, &current_time);
-          printf("Time difference since last iteration is %ld s + %ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
-          diff.tv_sec -= sleep_duration.tv_sec;
-          diff.tv_nsec -= sleep_duration.tv_nsec;
-          printf("Delay correctness: %ld s + %09ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
-
           int return_code = nanosleep(&sleep_duration, &remaining_time);
           if (return_code != 0) {
                printf("return code indicates we did not sleep the full duration. Code %d", return_code);
 
           }
+
+          memcpy(&last_time, &current_time, sizeof(struct timespec));
+          clock_gettime(CLOCK_REALTIME, &current_time);
+          printf("Current time is %ld s + %09ld ns\r\n" , current_time.tv_sec, current_time.tv_nsec);
+          struct timespec diff = time_diff(&last_time, &current_time);
+          printf("Time difference since last iteration is %ld s + %09ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
+          diff.tv_sec -= sleep_duration.tv_sec;
+          diff.tv_nsec -= sleep_duration.tv_nsec;
+          printf("Delay correctness: %ld s + %09ld ns\r\n" , diff.tv_sec, diff.tv_nsec);
+
           printf("sched_getcpu = %d\n", sched_getcpu());
 
           x++;
+)
      }
 
      printf("deadline thread dies [%ld]\n", gettid());
