@@ -19,6 +19,12 @@ struct timespec time_diff(const struct timespec * last_time, const struct timesp
      diff.tv_sec = current_time->tv_sec - last_time->tv_sec;
      diff.tv_nsec = current_time->tv_nsec - last_time->tv_nsec;
 
+     if (diff.tv_sec < 0)
+     {
+          diff.tv_sec = abs(diff.tv_sec);
+          diff.tv_nsec += 1000 * 1000 * 1000
+     }
+
      while (diff.tv_nsec < 0)
      {
           diff.tv_nsec += 1000 * 1000 * 1000;
@@ -29,6 +35,8 @@ struct timespec time_diff(const struct timespec * last_time, const struct timesp
           diff.tv_nsec -= 1000 * 1000 * 1000;
           diff.tv_sec++;
      }
+
+
 
      return diff;
 }

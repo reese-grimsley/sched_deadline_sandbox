@@ -38,6 +38,7 @@
 const struct timespec SLEEP_DURATION = {.tv_sec = 5, .tv_nsec = 0};
 const __u64 C = 1000 * 1000 * 10;  // nsec
 const __u64 T = 1000 * 1000 * 1000 * 2; 
+const int TIMEOUT = 30;
 static volatile int done;
 
 struct sched_attr {
@@ -147,7 +148,7 @@ int main (int argc, char **argv)
 
      pthread_create(&thread, NULL, run_deadline, NULL);
 
-     sleep(30);
+     sleep(TIMEOUT);
 
      done = 1;
      pthread_join(thread, NULL);
